@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OGO",
+    "DND",
+    "OGO"
+  ],
+  "key": {
+    "O": { "item": "minecraft:obsidian" },
+    "G": { "item": "minecraft:gold_ingot" },
+    "D": { "item": "minecraft:diamond" },
+    "N": { "item": "minecraft:nether_star" }
+  },
+  "result": {
+    "item": "civilizationsmod:monument",
+    "count": 1
+  }
+}
