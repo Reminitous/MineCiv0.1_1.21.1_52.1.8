@@ -1,22 +1,33 @@
-package net.reminitous.civilizationsmod.monument;
+package net.reminitous.civilizationsmod.Monument;
 
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 
-public class MonumentScreen extends AbstractContainerScreen<MonumentMenu> {
+import net.minecraftforge.registries.ObjectHolder;
 
-    public MonumentScreen(MonumentMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title);
+import java.util.function.Supplier;
+
+public class MonumentMenu extends AbstractContainerMenu {
+
+    private final BlockEntity blockEntity;
+
+    @ObjectHolder("civilizationsmod:monument_menu")
+    public static MenuType<MonumentMenu> TYPE;
+
+    public MonumentMenu(int windowId, Inventory playerInventory, BlockEntity blockEntity) {
+        super(TYPE, windowId);
+        this.blockEntity = blockEntity;
+    }
+
+    public BlockEntity getBlockEntity() {
+        return blockEntity;
     }
 
     @Override
-    protected void renderBg(net.minecraft.client.gui.GuiGraphics gfx, float partialTicks, int mouseX, int mouseY) {
-        // Render custom background and buttons
-    }
-
-    @Override
-    public void render(net.minecraft.client.gui.GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        super.render(gfx, mouseX, mouseY, partialTicks);
+    public boolean stillValid(net.minecraft.world.entity.player.Player player) {
+        return true;
     }
 }

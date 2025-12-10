@@ -1,13 +1,10 @@
 package net.reminitous.civilizationsmod.items;
 
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.reminitous.civilizationsmod.CivilizationsMod;
-import net.reminitous.civilizationsmod.monument.ModBlocks;
 
 /**
  * Registers all custom items for Civilizations Mod.

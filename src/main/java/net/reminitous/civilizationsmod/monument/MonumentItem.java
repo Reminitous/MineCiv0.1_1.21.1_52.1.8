@@ -4,6 +4,7 @@ import net.reminitous.civilizationsmod.civilization.CivilizationManager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.InteractionResult;
+import net.reminitous.civilizationsmod.setup.ModBlocks;
 
 public class MonumentItem extends Item {
 

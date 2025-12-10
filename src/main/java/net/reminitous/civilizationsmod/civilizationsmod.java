@@ -16,39 +16,45 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import net.reminitous.civilizationsmod.network.PacketHandler;
 import net.reminitous.civilizationsmod.territory.TerritoryEvents;
+import net.reminitous.civilizationsmod.registry.ModBlocks;
+import net.reminitous.civilizationsmod.registry.ModBlockEntities;
+import net.reminitous.civilizationsmod.registry.ModItems;
 
 @Mod(CivilizationsMod.MODID)
 public class CivilizationsMod {
-    public static final String MODID = "mineciv"; // Keep your original mod ID
+    public static final String MODID = "mineciv";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CivilizationsMod(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
 
-        // Original setup
+        // Register DeferredRegisters
+        ModItems.register(modEventBus);         // Items
+        ModBlocks.register(modEventBus);        // Blocks
+        ModBlockEntities.register(modEventBus); // BlockEntities
+        ModMenus.register(modEventBus);         // GUIs / Containers (we'll create this next)
+
+        // Listeners
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);
+
+        // Config
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        // Register to Forge event bus
+        // Forge Event Bus
         MinecraftForge.EVENT_BUS.register(this);
 
-        // Original registrations
-        ModItems.register();
-        ModBlocks.register();
-        ModBlockEntities.register();
-
-        // New registrations from added code
+        // Network
         PacketHandler.register();
         TerritoryEvents.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // You can put additional setup code here if needed
+        LOGGER.info("Common setup complete");
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        // Your creative tab setup here
+        // Add items/blocks to creative tabs
     }
 
     @SubscribeEvent

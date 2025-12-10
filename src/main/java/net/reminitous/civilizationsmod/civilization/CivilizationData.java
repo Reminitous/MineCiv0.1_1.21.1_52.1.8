@@ -1,53 +1,104 @@
-package net.reminitous.civilizationsmod.data;
+package net.reminitous.civilizationsmod.Civilization;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.ChunkPos;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.Map;
+public class CivilizationData {
 
-public class CivilizationData extends SavedData {
-    private final Map<String, Civilization> civilizations = new HashMap<>();
+    private String name;
+    private UUID leader;
+    private CivilizationClass civClass;
+    private Set<UUID> members = new HashSet<>();
+    private Set<ChunkPos> territory = new HashSet<>();
+    private int virtualLevel = 1;
+    private long experience = 0;
+    private long lastActiveTimestamp;
 
-    public CivilizationData() {
-        super();
+    private Set<UUID> allies = new HashSet<>();
+    private Set<UUID> rivals = new HashSet<>();
+
+    public CivilizationData(String name, UUID leader, CivilizationClass civClass) {
+        this.name = name;
+        this.leader = leader;
+        this.civClass = civClass;
+        this.members.add(leader);
+        this.lastActiveTimestamp = System.currentTimeMillis();
     }
 
-    // Add a new civilization
-    public void addCivilization(String name, Civilization civilization) {
-        civilizations.put(name, civilization);
-        setDirty(); // Mark data as modified
+    public String getName() {
+        return name;
     }
 
-    // Get a civilization by name
-    public Civilization getCivilization(String name) {
-        return civilizations.get(name);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    // Remove a civilization
-    public void removeCivilization(String name) {
-        civilizations.remove(name);
-        setDirty();
+    public UUID getLeader() {
+        return leader;
     }
 
-    // Serialization to NBT
-    @Override
-    public CompoundTag save(CompoundTag nbt) {
-        CompoundTag civsTag = new CompoundTag();
-        for (Map.Entry<String, Civilization> entry : civilizations.entrySet()) {
-            civsTag.put(entry.getKey(), entry.getValue().serializeNBT());
+    public CivilizationClass getCivClass() {
+        return civClass;
+    }
+
+    public Set<UUID> getMembers() {
+        return members;
+    }
+
+    public boolean addMember(UUID playerId) {
+        if (members.size() >= 10) return false; // max members
+        return members.add(playerId);
+    }
+
+    public boolean removeMember(UUID playerId) {
+        if (playerId.equals(leader)) return false; // cannot remove leader
+        return members.remove(playerId);
+    }
+
+    public Set<ChunkPos> getTerritory() {
+        return territory;
+    }
+
+    public void addChunk(ChunkPos chunkPos) {
+        if (territory.size() < 100) { // max 10x10 chunks
+            territory.add(chunkPos);
         }
-        nbt.put("civilizations", civsTag);
-        return nbt;
     }
 
-    // Deserialization from NBT
-    public static CivilizationData load(CompoundTag nbt) {
-        CivilizationData data = new CivilizationData();
-        CompoundTag civsTag = nbt.getCompound("civilizations");
-        for (String key : civsTag.getAllKeys()) {
-            data.civilizations.put(key, Civilization.deserializeNBT(civsTag.getCompound(key)));
-        }
-        return data;
+    public long getExperience() {
+        return experience;
+    }
+
+    public void addExperience(long amount) {
+        this.experience += amount;
+        updateVirtualLevel();
+    }
+
+    private void updateVirtualLevel() {
+        this.virtualLevel = (int) (experience / 1000) + 1; // simple leveling logic
+    }
+
+    public int getVirtualLevel() {
+        return virtualLevel;
+    }
+
+    public void updateLastActive() {
+        this.lastActiveTimestamp = System.currentTimeMillis();
+    }
+
+    public long getLastActiveTimestamp() {
+        return lastActiveTimestamp;
+    }
+
+    public Set<UUID> getAllies() {
+        return allies;
+    }
+
+    public Set<UUID> getRivals() {
+        return rivals;
+    }
+
+    public boolean isMember(UUID playerId) {
+        return members.contains(playerId);
     }
 }
