@@ -1,45 +1,37 @@
-package net.reminitous.civilizationsmod.Network;
+package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.reminitous.civilizationsmod.Network.Packets.SyncCivilizationDataPacket;
+import net.minecraftforge.network.NetworkDirection;
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+
+
+import net.reminitous.civilizationsmod.CivilizationsMod;
 
 public class ModMessages {
-
-    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation("civilizationsmod", "main"),
-            () -> "1.0",
-            s -> true,
-            s -> true
-    );
+    private static final String PROTOCOL_VERSION = "1";
+    public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
+            .named(new ResourceLocation(CivilizationsMod.MODID, "main"))
+            .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+            .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+            .networkProtocolVersion(() -> PROTOCOL_VERSION)
+            .simpleChannel();
 
     private static int packetId = 0;
 
-    /** Helper to register packets */
-    public static <T> void registerMessage(Class<T> clazz,
-                                           BiConsumer<T, FriendlyByteBuf> encoder,
-                                           Function<FriendlyByteBuf, T> decoder,
-                                           BiConsumer<T, Supplier<NetworkEvent.Context>> handler) {
-        CHANNEL.registerMessage(packetId++, clazz, encoder, decoder, handler);
+    public static int nextID() {
+        return packetId++;
     }
 
-    /** Call this in your mod init */
-    public static void registerPackets() {
-        registerMessage(SyncCivilizationDataPacket.class,
-                (packet, buf) -> packet.toBytes(buf),
-                buf -> new SyncCivilizationDataPacket(buf),
-                (packet, ctx) -> packet.handle(ctx));
-    }
-
-    /** Helper to send to one player */
-    public static <T> void sendToPlayer(T message, net.minecraft.server.level.ServerPlayer player) {
-        CHANNEL.sendTo(message, player.connection.connection, net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT);
+    public static void register() {
+        CHANNEL.registerMessage(
+                nextID(),
+                SyncCivilizationPacket.class,
+                SyncCivilizationPacket::encode,
+                SyncCivilizationPacket::decode,
+                SyncCivilizationPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT) // server -> client
+        );
     }
 }

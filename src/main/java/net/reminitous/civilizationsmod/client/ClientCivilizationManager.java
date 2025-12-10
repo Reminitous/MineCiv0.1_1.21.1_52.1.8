@@ -1,6 +1,6 @@
-package net.reminitous.civilizationsmod.Client;
+package net.reminitous.civilizationsmod.client;
 
-import net.reminitous.civilizationsmod.Civilization.Civilization;
+import net.reminitous.civilizationsmod.civilization.Civilization;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ public class ClientCivilizationManager {
 
     /** Update or add a civilization from server data */
     public static void updateCivilization(Civilization civ) {
-        CIVILIZATIONS.put(civ.getId(), civ);
+        CIVILIZATIONS.put(civ.getId(), civ); // note the lowercase 'getId()'
     }
 
     /** Get civilization by UUID */

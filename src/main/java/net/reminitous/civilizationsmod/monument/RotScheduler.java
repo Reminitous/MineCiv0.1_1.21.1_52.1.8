@@ -6,9 +6,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 
-import net.reminitous.civilizationsmod.territory.TerritoryManager;
-import net.reminitous.civilizationsmod.territory.TerritorySavedData;
-import net.reminitous.civilizationsmod.civilization.CivilizationRecord;
+import net.reminitous.civilizationsmod.data.TerritorySavedData;
+import net.reminitous.civilizationsmod.data.CivilizationRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,46 +22,44 @@ public class RotScheduler {
         if (event.phase != TickEvent.Phase.END) return;
 
         accumulator++;
-
-        // once per 1200 ticks (60s)
-        if (accumulator < 1200) return;
+        if (accumulator < 1200) return; // ~60s at 20 TPS
         accumulator = 0;
 
-        MinecraftServer server = event.getServer();
+        MinecraftServer server = net.minecraftforge.fml.server.ServerLifecycleHooks.getCurrentServer();
         if (server == null) return;
 
         long now = System.currentTimeMillis();
 
-        // For every dimension:
         for (ServerLevel level : server.getAllLevels()) {
 
-            TerritorySavedData data = TerritoryManager.get(level);
+            TerritorySavedData data = TerritorySavedData.get(level);
             if (data == null) continue;
 
             List<String> expiredCivs = new ArrayList<>();
 
             // Collect expired civilizations
-            for (CivilizationRecord rec : data.getAll()) {
-                if (now - rec.lastActiveMillis >= WEEK_MS) {
-                    expiredCivs.add(rec.id);
+            for (CivilizationRecord rec : data.getAllRecords()) { // assuming getAllRecords() exists
+                if (now - rec.getLastActiveMillis() >= WEEK_MS) {  // use getter
+                    expiredCivs.add(rec.getId());                  // use getter
                 }
             }
 
             // Remove each expired civ
             for (String id : expiredCivs) {
 
-                CivilizationRecord rec = data.getById(id);
+                CivilizationRecord rec = data.getRecordById(id);   // use proper getter
+                if (rec == null) continue;
 
-                // remove monument
-                if (rec != null && rec.monumentPos != null) {
-                    level.setBlock(rec.monumentPos, Blocks.AIR.defaultBlockState(), 3);
+                // remove monument block
+                if (rec.getMonumentPos() != null) {              // use getter
+                    level.setBlock(rec.getMonumentPos(), Blocks.AIR.defaultBlockState(), 3);
                 }
 
                 // remove civilization
-                data.removeCiv(id);
+                data.removeCivilization(id);                     // use proper method
             }
 
-            data.setDirty();
+            data.setDirty();                                     // mark data dirty
         }
     }
 }

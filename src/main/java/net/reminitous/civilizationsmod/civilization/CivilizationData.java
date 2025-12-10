@@ -1,4 +1,4 @@
-package net.reminitous.civilizationsmod.Civilization;
+package net.reminitous.civilizationsmod.civilization;
 
 import net.minecraft.world.level.ChunkPos;
 import java.util.*;

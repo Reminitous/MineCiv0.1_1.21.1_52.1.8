@@ -1,4 +1,4 @@
-package com.yourmod.network;
+package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -22,10 +22,12 @@ public class AllianceProposalPacket {
     }
 
     public static void handle(AllianceProposalPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            // TODO: Add your server/client logic here
+        NetworkEvent.Context context = ctx.get(); // ensure correct type
+        context.enqueueWork(() -> {
+            // TODO: Add server/client logic
+            System.out.println("Alliance proposal received: " + pkt.getAllianceDetails());
         });
-        ctx.get().setPacketHandled(true);
+        context.setPacketHandled(true);
     }
 
     public String getAllianceDetails() {

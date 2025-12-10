@@ -1,73 +1,46 @@
-package net.reminitous.civilizationsmod.Civilization;
+package net.reminitous.civilizationsmod.civilization;
 
-import net.minecraft.world.level.ChunkPos;
-import java.util.*;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.reminitous.civilizationsmod.civilization.Civilization;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class CivilizationManager {
 
-    private static final Map<UUID, CivilizationData> civilizations = new HashMap<>();
-    private static final Map<UUID, UUID> playerToCiv = new HashMap<>(); // player -> civ leader mapping
+    private static final Map<UUID, Civilization> CIVILIZATIONS = new HashMap<>();
 
-    public static CivilizationData createCivilization(String name, UUID leaderId, CivilizationClass civClass, ChunkPos startingChunk) {
-        CivilizationData civ = new CivilizationData(name, leaderId, civClass);
-        civ.addChunk(startingChunk);
-        civilizations.put(leaderId, civ);
-        playerToCiv.put(leaderId, leaderId);
-        return civ;
+    /** Load all civilizations from saved data */
+    public static void loadData(MinecraftServer server) {
+        // TODO: Replace with actual saved data loading logic
+        // Example: populate CIVILIZATIONS map from TerritorySavedData or other storage
+        CIVILIZATIONS.clear();
     }
 
-    public static boolean addMember(UUID leaderId, UUID playerId) {
-        CivilizationData civ = civilizations.get(leaderId);
-        if (civ == null) return false;
-        if (playerToCiv.containsKey(playerId)) return false; // player already in a civ
-        boolean added = civ.addMember(playerId);
-        if (added) playerToCiv.put(playerId, leaderId);
-        return added;
-    }
-
-    public static boolean removeMember(UUID leaderId, UUID playerId) {
-        CivilizationData civ = civilizations.get(leaderId);
-        if (civ == null) return false;
-        boolean removed = civ.removeMember(playerId);
-        if (removed) playerToCiv.remove(playerId);
-        return removed;
-    }
-
-    public static CivilizationData getCivilization(UUID playerId) {
-        UUID leaderId = playerToCiv.get(playerId);
-        if (leaderId == null) return null;
-        return civilizations.get(leaderId);
-    }
-
-    public static void claimChunk(UUID playerId, ChunkPos chunk) {
-        CivilizationData civ = getCivilization(playerId);
-        if (civ != null) {
-            civ.addChunk(chunk);
+    /** Update civilizations each tick */
+    public static void tick() {
+        for (Civilization civ : CIVILIZATIONS.values()) {
+            civ.tick();
         }
     }
 
-    public static void removeCivilization(UUID leaderId) {
-        CivilizationData civ = civilizations.get(leaderId);
+    /** Get a player's civilization by their UUID */
+    public static Civilization getCivilizationForPlayer(UUID playerUUID) {
+        return CIVILIZATIONS.get(playerUUID);
+    }
+
+    /** Sync a civilization to a specific player */
+    public static void syncToPlayer(ServerPlayer player) {
+        Civilization civ = getCivilizationForPlayer(player.getUUID());
         if (civ != null) {
-            for (UUID member : civ.getMembers()) {
-                playerToCiv.remove(member);
-            }
-            civilizations.remove(leaderId);
+            // TODO: send civ data to client via network packet
         }
     }
 
-    public static Collection<CivilizationData> getAllCivilizations() {
-        return civilizations.values();
-    }
-
-    public static boolean isChunkClaimed(ChunkPos chunk) {
-        return civilizations.values().stream().anyMatch(civ -> civ.getTerritory().contains(chunk));
-    }
-
-    public static void updateActivity(UUID playerId) {
-        CivilizationData civ = getCivilization(playerId);
-        if (civ != null) {
-            civ.updateLastActive();
-        }
+    /** Add or update a civilization in memory */
+    public static void addOrUpdateCivilization(Civilization civ) {
+        CIVILIZATIONS.put(civ.getId(), civ);
     }
 }

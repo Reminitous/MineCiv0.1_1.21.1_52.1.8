@@ -1,42 +1,29 @@
-package net.reminitous.civilizationsmod.data;
+package net.reminitous.civilizationsmod.civilization;
 
-import net.minecraft.nbt.CompoundTag;
+import java.util.UUID;
 
 public class Civilization {
-    private String leader;
-    private int population;
 
-    public Civilization(String leader, int population) {
-        this.leader = leader;
-        this.population = population;
+    private final UUID id;
+    private final String name;
+
+    public Civilization(UUID id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public String getLeader() {
-        return leader;
+    /** Getter for the civilization ID */
+    public UUID getId() {
+        return id;
     }
 
-    public void setLeader(String leader) {
-        this.leader = leader;
+    /** Getter for the civilization name */
+    public String getName() {
+        return name;
     }
 
-    public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
-    }
-
-    // Serialization
-    public CompoundTag serializeNBT() {
-        CompoundTag nbt = new CompoundTag();
-        nbt.putString("Leader", leader);
-        nbt.putInt("Population", population);
-        return nbt;
-    }
-
-    // Deserialization
-    public static Civilization deserializeNBT(CompoundTag nbt) {
-        return new Civilization(nbt.getString("Leader"), nbt.getInt("Population"));
+    /** Tick method if needed for updates each server tick */
+    public void tick() {
+        // Implement periodic logic for civilizations if needed
     }
 }

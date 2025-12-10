@@ -1,4 +1,4 @@
-package net.reminitous.civilizationsmod.Civilization;
+package net.reminitous.civilizationsmod.civilization;
 
 public enum CivilizationClass {
     AGRICULTURAL("Agricultural"),
