@@ -1,94 +1,97 @@
-package net.reminitous.civilizationsmod.war;
+package net.reminitous.civilizationsmod.civilization;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 public class CivilizationWarState {
 
-    private final String attacker;
-    private final String defender;
+    private final UUID attacker;
+    private final UUID defender;
 
-    private double attackerHealth;
-    private double defenderHealth;
+    private boolean warActive;
+    private long warStartTime;
+    private long warEndTime;
 
-    private final Set<ServerPlayer> attackerMembers = new HashSet<>();
-    private final Set<ServerPlayer> defenderMembers = new HashSet<>();
+    private int attackerHealth;
+    private int defenderHealth;
 
-    private final Set<BlockPos> attackerTerritory = new HashSet<>();
-    private final Set<BlockPos> defenderTerritory = new HashSet<>();
-
-    private boolean warEnded = false;
-
-    public CivilizationWarState(String attacker, String defender,
-                                Set<ServerPlayer> attackerMembers, Set<ServerPlayer> defenderMembers,
-                                Set<BlockPos> attackerTerritory, Set<BlockPos> defenderTerritory) {
+    // Constructor
+    public CivilizationWarState(UUID attacker, UUID defender, int attackerHealth, int defenderHealth) {
         this.attacker = attacker;
         this.defender = defender;
-        this.attackerMembers.addAll(attackerMembers);
-        this.defenderMembers.addAll(defenderMembers);
-        this.attackerTerritory.addAll(attackerTerritory);
-        this.defenderTerritory.addAll(defenderTerritory);
-
-        this.attackerHealth = calculateCivilizationHealth(attackerTerritory);
-        this.defenderHealth = calculateCivilizationHealth(defenderTerritory);
+        this.attackerHealth = attackerHealth;
+        this.defenderHealth = defenderHealth;
+        this.warActive = true;
+        this.warStartTime = System.currentTimeMillis();
+        this.warEndTime = -1;
     }
 
-    // Example health calculation based on chest contents
-    private double calculateCivilizationHealth(Set<BlockPos> territory) {
-        double totalValue = 0;
-        for (BlockPos pos : territory) {
-            // Placeholder: iterate chests in territory and sum item values
-            totalValue += 100; // simplified for demonstration
-        }
-        return totalValue;
+    // ===========================
+    // WAR STATE QUERIES
+    // ===========================
+
+    /** Returns true if the war is active. */
+    public boolean isWarActive() {
+        return warActive;
     }
 
-    public void damageAttacker(double amount) {
+    /** Returns true if the war has ended. */
+    public boolean isWarOver() {
+        return !warActive;
+    }
+
+    /** Returns true if either side has been defeated. */
+    public boolean isEitherSideDefeated() {
+        return attackerHealth <= 0 || defenderHealth <= 0;
+    }
+
+    // ===========================
+    // WAR STATE MUTATORS
+    // ===========================
+
+    public void endWar() {
+        this.warActive = false;
+        this.warEndTime = System.currentTimeMillis();
+    }
+
+    public void damageAttacker(int amount) {
         attackerHealth -= amount;
-        checkEnd();
-    }
-
-    public void damageDefender(double amount) {
-        defenderHealth -= amount;
-        checkEnd();
-    }
-
-    private void checkEnd() {
-        if (attackerHealth <= 0 || defenderHealth <= 0) {
-            warEnded = true;
+        if (attackerHealth <= 0) {
+            endWar();
         }
     }
 
-    public boolean hasEnded() {
-        return warEnded;
+    public void damageDefender(int amount) {
+        defenderHealth -= amount;
+        if (defenderHealth <= 0) {
+            endWar();
+        }
     }
 
-    public String getWinner() {
-        if (!warEnded) return null;
-        return attackerHealth > defenderHealth ? attacker : defender;
+    // ===========================
+    // GETTERS
+    // ===========================
+
+    public UUID getAttacker() {
+        return attacker;
     }
 
-    public String getLoser() {
-        if (!warEnded) return null;
-        return attackerHealth > defenderHealth ? defender : attacker;
+    public UUID getDefender() {
+        return defender;
     }
 
-    public Set<ServerPlayer> getWinnerMembers() {
-        return getWinner().equals(attacker) ? attackerMembers : defenderMembers;
+    public int getAttackerHealth() {
+        return attackerHealth;
     }
 
-    public Set<ServerPlayer> getLoserMembers() {
-        return getLoser().equals(attacker) ? attackerMembers : defenderMembers;
+    public int getDefenderHealth() {
+        return defenderHealth;
     }
 
-    public Set<BlockPos> getWinnerTerritory() {
-        return getWinner().equals(attacker) ? attackerTerritory : defenderTerritory;
+    public long getWarStartTime() {
+        return warStartTime;
     }
 
-    public Set<BlockPos> getLoserTerritory() {
-        return getLoser().equals(attacker) ? attackerTerritory : defenderTerritory;
+    public long getWarEndTime() {
+        return warEndTime;
     }
 }
