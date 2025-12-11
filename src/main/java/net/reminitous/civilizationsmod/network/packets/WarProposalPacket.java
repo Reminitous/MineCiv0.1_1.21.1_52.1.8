@@ -1,4 +1,4 @@
-package com.yourmod.network;
+package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

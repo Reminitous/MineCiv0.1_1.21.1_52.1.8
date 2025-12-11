@@ -10,8 +10,8 @@ import net.reminitous.civilizationsmod.territory.TerritoryManager;
 
 public class LumberjackNPC extends Monster {
 
-    public LumberjackNPC(EntityType<? extends Monster> type, Level level) {
-        super(type, level);
+    public LumberjackNPC(EntityType<? extends Villager> type, Level level) {
+        super(type, level); // ✅ Pass type, not null
     }
 
     @Override

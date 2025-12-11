@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.reminitous.civilizationsmod.CivilizationsMod;
 import net.reminitous.civilizationsmod.data.CivilizationRecord;
 import net.reminitous.civilizationsmod.data.TerritorySavedData;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
 
@@ -94,7 +95,7 @@ public class TerritoryEventHandler {
         }
 
         // Check by registry name for shulker boxes or other containers
-        ResourceLocation key = Registry.BLOCK.getKey(block);
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
         return key != null && key.getPath().contains("shulker");
     }
 

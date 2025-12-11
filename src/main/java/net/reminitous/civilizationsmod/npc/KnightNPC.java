@@ -10,8 +10,8 @@ import net.reminitous.civilizationsmod.territory.TerritoryManager;
 
 public class KnightNPC extends Monster {
 
-    public KnightNPC(EntityType<? extends Monster> type, Level level) {
-        super(type, level);
+    public KnightNPC(EntityType<? extends Villager> type, Level level) {
+        super(type, level); // ✅ Pass type, not null
     }
 
     @Override

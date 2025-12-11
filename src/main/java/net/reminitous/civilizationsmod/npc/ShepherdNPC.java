@@ -11,7 +11,7 @@ import net.reminitous.civilizationsmod.territory.TerritoryManager;
 public class ShepherdNPC extends Villager {
 
     public ShepherdNPC(EntityType<? extends Villager> type, Level level) {
-        super(type, level);
+        super(type, level); // ✅ Pass type, not null
     }
 
     @Override

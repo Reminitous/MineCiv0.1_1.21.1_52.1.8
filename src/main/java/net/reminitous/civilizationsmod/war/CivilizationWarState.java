@@ -1,4 +1,4 @@
-package net.reminitous.civilizationsmod.civilization;
+package net.reminitous.civilizationsmod.war;
 
 import java.util.UUID;
 

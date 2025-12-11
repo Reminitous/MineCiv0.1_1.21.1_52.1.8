@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.network.NetworkDirection;
-
+import net.reminitous.civilizationsmod.network.packets.SyncCivilizationDataPacket;
 
 
 import net.reminitous.civilizationsmod.CivilizationsMod;

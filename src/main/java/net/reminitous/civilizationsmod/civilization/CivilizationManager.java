@@ -1,46 +1,57 @@
 package net.reminitous.civilizationsmod.civilization;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.reminitous.civilizationsmod.civilization.Civilization;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Simple in-memory manager of civilizations. This manager holds civ data while
+ * the server is running. Persist/load should be done via a SavedData instance
+ * (see TerritorySavedData).
+ */
 public class CivilizationManager {
 
-    private static final Map<UUID, Civilization> CIVILIZATIONS = new HashMap<>();
+    // map civId -> CivilizationData
+    private static final Map<UUID, CivilizationData> CIVILIZATIONS = new HashMap<>();
 
-    /** Load all civilizations from saved data */
-    public static void loadData(MinecraftServer server) {
-        // TODO: Replace with actual saved data loading logic
-        // Example: populate CIVILIZATIONS map from TerritorySavedData or other storage
-        CIVILIZATIONS.clear();
+    /** Return immutable view of all civs (caller must not mutate) */
+    public static Collection<CivilizationData> getAllCivilizations() {
+        return CIVILIZATIONS.values();
     }
 
-    /** Update civilizations each tick */
-    public static void tick() {
-        for (Civilization civ : CIVILIZATIONS.values()) {
-            civ.tick();
+    public static CivilizationData getCivilizationById(UUID id) {
+        return CIVILIZATIONS.get(id);
+    }
+
+    /** Find the civilization that a player is a member of (or null) */
+    public static CivilizationData getCivilizationForPlayer(UUID playerId) {
+        for (CivilizationData civ : CIVILIZATIONS.values()) {
+            if (civ.isMember(playerId)) return civ;
         }
+        return null;
     }
 
-    /** Get a player's civilization by their UUID */
-    public static Civilization getCivilizationForPlayer(UUID playerUUID) {
-        return CIVILIZATIONS.get(playerUUID);
+    /** Convenience for ServerPlayer */
+    public static CivilizationData getCivilizationForPlayer(ServerPlayer player) {
+        return getCivilizationForPlayer(player.getUUID());
     }
 
-    /** Sync a civilization to a specific player */
-    public static void syncToPlayer(ServerPlayer player) {
-        Civilization civ = getCivilizationForPlayer(player.getUUID());
-        if (civ != null) {
-            // TODO: send civ data to client via network packet
-        }
+    public static void addOrUpdateCivilization(UUID id, CivilizationData civ) {
+        CIVILIZATIONS.put(id, civ);
     }
 
-    /** Add or update a civilization in memory */
-    public static void addOrUpdateCivilization(Civilization civ) {
-        CIVILIZATIONS.put(civ.getId(), civ);
+    public static void removeCivilization(UUID id) {
+        CIVILIZATIONS.remove(id);
     }
+
+    public static boolean civNameExists(String name) {
+        return CIVILIZATIONS.values().stream()
+                .anyMatch(c -> c.getName() != null && c.getName().equalsIgnoreCase(name));
+    }
+
+    // TODO: networking: implement syncToPlayer / syncAll using a SimpleChannel
+    // TODO: persistence: call TerritorySavedData instance to persist changes to disk
 }

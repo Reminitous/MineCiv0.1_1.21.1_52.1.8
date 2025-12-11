@@ -1,27 +1,25 @@
-package net.reminitous.civilizationsmod.items;
+package net.reminitous.civilizationsmod.registry;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.reminitous.civilizationsmod.CivilizationsMod;
+import net.reminitous.civilizationsmod.item.MonumentItem;
 
-/**
- * Registers all custom items for Civilizations Mod.
- */
 public class ModItems {
 
-    // Deferred register for items
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, CivilizationsMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ITEMS, CivilizationsMod.MODID);
 
-    /**
-     * Monument Item
-     * Crafted by players to place a Monument block and start a civilization.
-     */
-    // ModItems.java
-    public static final RegistryObject<Item> MONUMENT_ITEM = ITEMS.register("monument",
-            () -> new MonumentItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    // Monument item - crafted to start a civilization
+    public static final RegistryObject<Item> MONUMENT_ITEM =
+            ITEMS.register("monument",
+                    () -> new MonumentItem(new Item.Properties()));
 
-    // You can register other items (resources, tools, class-specific items) here
+    // Monument block item (for placing the block)
+    public static final RegistryObject<BlockItem> MONUMENT_BLOCK_ITEM =
+            ITEMS.register("monument_block",
+                    () -> new BlockItem(ModBlocks.MONUMENT.get(), new Item.Properties()));
 }

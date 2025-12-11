@@ -1,4 +1,4 @@
-package com.example.mod.network;
+package net.reminitous.civilizationsmod.network;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
