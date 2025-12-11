@@ -1,8 +1,7 @@
 package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.event.NetworkEvent; // <--- Correct import
-import java.util.function.Supplier;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class SyncCivilizationPacket {
 
@@ -20,17 +19,15 @@ public class SyncCivilizationPacket {
         return new SyncCivilizationPacket(buf.readUtf());
     }
 
-    public static void handle(SyncCivilizationPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> {
-            // TODO: apply civData to client-side
+    public static void handle(SyncCivilizationPacket pkt, CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> {
+            // Client-side: update civilization data
             System.out.println("Received civ data: " + pkt.getCivData());
         });
-        context.setPacketHandled(true);
+        ctx.setPacketHandled(true);
     }
 
     public String getCivData() {
         return civData;
     }
 }
-

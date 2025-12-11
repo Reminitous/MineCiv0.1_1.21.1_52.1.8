@@ -52,6 +52,50 @@ public class CivilizationManager {
                 .anyMatch(c -> c.getName() != null && c.getName().equalsIgnoreCase(name));
     }
 
+    public static void loadData(MinecraftServer server) {
+        load(server); // Calls existing load method
+    }
+
+    public static void tick() {
+        for (Civilization civ : CIVILIZATIONS.values()) {
+            civ.tick();
+        }
+    }
+
+    public static void syncToPlayer(ServerPlayer player) {
+        Civilization civ = getCivilizationForPlayer(player.getUUID());
+        if (civ != null) {
+            String civData = serializeCivilization(civ);
+            ModMessages.CHANNEL.sendToPlayer(new SyncCivilizationPacket(civData), player);
+        }
+    }
+
+    public static Civilization get() {
+        return null; // Placeholder - this is for singleton pattern if needed
+    }
+
+    public static Civilization getCivilization(UUID civId) {
+        return CIVILIZATIONS.get(civId);
+    }
+
+    public static void loadData(MinecraftServer server) {
+        load(server);
+    }
+
+    public static void tick() {
+        for (Civilization civ : CIVILIZATIONS.values()) {
+            civ.tick();
+        }
+    }
+
+    public static void syncToPlayer(ServerPlayer player) {
+        Civilization civ = getCivilizationForPlayer(player.getUUID());
+        if (civ != null) {
+            String civData = serializeCivilization(civ);
+            ModMessages.CHANNEL.sendToPlayer(new SyncCivilizationPacket(civData), player);
+        }
+    }
+
     // TODO: networking: implement syncToPlayer / syncAll using a SimpleChannel
     // TODO: persistence: call TerritorySavedData instance to persist changes to disk
 }

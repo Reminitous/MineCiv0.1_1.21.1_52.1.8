@@ -1,8 +1,7 @@
 package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.event.NetworkEvent;   // <-- Correct import
-import java.util.function.Supplier;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class AllianceProposalPacket {
 
@@ -20,15 +19,11 @@ public class AllianceProposalPacket {
         return new AllianceProposalPacket(buf.readUtf());
     }
 
-    public static void handle(AllianceProposalPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get();
-
-        context.enqueueWork(() -> {
-            // TODO: Add your server/client logic here
-            System.out.println("Alliance proposal received: " + pkt.allianceDetails);
+    public static void handle(AllianceProposalPacket pkt, CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> {
+            System.out.println("Alliance proposal received: " + pkt.getAllianceDetails());
         });
-
-        context.setPacketHandled(true);
+        ctx.setPacketHandled(true);
     }
 
     public String getAllianceDetails() {

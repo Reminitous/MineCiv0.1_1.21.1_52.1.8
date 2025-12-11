@@ -1,3 +1,5 @@
+package net.reminitous.civilizationsmod.territory;
+
 @Mod.EventBusSubscriber(modid = YourMod.MODID)
 public class TerritoryEventHandler {
     @SubscribeEvent

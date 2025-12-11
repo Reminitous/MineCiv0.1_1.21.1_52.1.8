@@ -28,14 +28,14 @@ public class HarvestCropGoal extends Goal {
     @Override
     public void tick() {
         BlockPos pos = farmer.blockPosition();
-        BlockState state = farmer.level.getBlockState(pos.below());
+        BlockState state = farmer.level().getBlockState(pos.below());
 
         if (state.getBlock() instanceof CropBlock crop) {
             if (crop.isMaxAge(state)) {
                 // Harvest the crop
-                crop.harvestBlock(farmer.level, pos.below(), state, farmer);
+                crop.harvestBlock(farmer.level(), pos.below(), state, farmer);
                 // Optionally replant (simulate NPC behavior)
-                farmer.level.setBlock(pos.below(), crop.defaultBlockState(), 3);
+                farmer.level().setBlock(pos.below(), crop.defaultBlockState(), 3);
             }
         }
     }

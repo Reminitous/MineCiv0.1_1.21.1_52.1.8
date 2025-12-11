@@ -62,7 +62,7 @@ public class CivilizationsMod {
         // ===========================
         // These MUST be called before any events fire
 
-        ModBlocks.BLOCKS.register(modEventBus);
+        net.reminitous.civilizationsmod.registry.ModBlocks.BLOCKS.register(modEventBus);
         LOGGER.debug("Registered blocks");
 
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);

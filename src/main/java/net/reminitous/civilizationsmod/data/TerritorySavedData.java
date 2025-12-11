@@ -287,6 +287,34 @@ public class TerritorySavedData extends SavedData {
         return stats;
     }
 
+    public Optional<CivilizationRecord> getCivForChunk(ChunkPos chunkPos) {
+        UUID civId = chunkOwnership.get(chunkPos);
+        if (civId == null) return Optional.empty();
+
+        // Return a CivilizationRecord - you'll need to query from manager
+        Civilization civ = CivilizationManager.getCivilization(civId);
+        if (civ == null) return Optional.empty();
+
+        // Create a record from civilization
+        return Optional.of(new CivilizationRecord(
+                civ.getId().toString(),
+                civ.getName()
+        ));
+    }
+
+    public Optional<CivilizationRecord> getCivForChunk(ChunkPos chunkPos) {
+        UUID civId = chunkOwnership.get(chunkPos);
+        if (civId == null) return Optional.empty();
+
+        Civilization civ = CivilizationManager.getCivilization(civId);
+        if (civ == null) return Optional.empty();
+
+        return Optional.of(new CivilizationRecord(
+                civ.getId().toString(),
+                civ.getName()
+        ));
+    }
+
     // ===========================
     // DEBUGGING
     // ===========================

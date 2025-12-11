@@ -10,7 +10,7 @@ import net.reminitous.civilizationsmod.territory.TerritoryManager;
 
 public class WizardNPC extends Monster {
 
-    public WizardNPC(EntityType<? extends Villager> type, Level level) {
+    public WizardNPC(EntityType<? extends Monster> type, Level level) {
         super(type, level); // ✅ Pass type, not null
     }
 

@@ -2,6 +2,7 @@ package net.reminitous.civilizationsmod.npc;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.level.Level;
 import net.reminitous.civilizationsmod.civilization.CivilizationManager;
@@ -10,7 +11,7 @@ import net.reminitous.civilizationsmod.territory.TerritoryManager;
 
 public class MerchantNPC extends Villager {
 
-    public MerchantNPC(EntityType<? extends Villager> type, Level level) {
+    public MerchantNPC(EntityType<? extends Monster> type, Level level) {
         super(type, level); // ✅ Pass type, not null
     }
 

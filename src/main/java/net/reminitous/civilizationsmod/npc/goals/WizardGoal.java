@@ -29,7 +29,7 @@ public class WizardGoal extends Goal {
     public void tick() {
         AABB area = TerritoryManager.getBoundingBoxForCivilization(CivilizationManager.getCivilization(wizard));
 
-        List<Player> intruders = wizard.level.getEntitiesOfClass(Player.class, area);
+        List<Player> intruders = wizard.level().getEntitiesOfClass(Player.class, area);
         for (Player p : intruders) {
             if (!CivilizationManager.isAlly(wizard, p)) {
                 // Apply curse or attack logic

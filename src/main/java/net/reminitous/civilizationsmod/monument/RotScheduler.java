@@ -5,7 +5,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
-
+import net.minecraftforge.server.ServerLifecycleHooks;
 import net.reminitous.civilizationsmod.data.TerritorySavedData;
 import net.reminitous.civilizationsmod.data.CivilizationRecord;
 

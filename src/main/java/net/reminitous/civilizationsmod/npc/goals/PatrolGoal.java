@@ -29,7 +29,7 @@ public class PatrolGoal extends Goal {
     public void tick() {
         AABB area = TerritoryManager.getBoundingBoxForCivilization(CivilizationManager.getCivilization(patroller));
 
-        List<Player> intruders = patroller.level.getEntitiesOfClass(Player.class, area);
+        List<Player> intruders = patroller.level().getEntitiesOfClass(Player.class, area);
         for (Player p : intruders) {
             if (!CivilizationManager.isAlly(patroller, p)) {
                 patroller.setTarget(p); // attack intruder

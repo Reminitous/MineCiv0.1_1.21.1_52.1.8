@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import net.reminitous.civilizationsmod.CivilizationsMod;
 import net.reminitous.civilizationsmod.data.CivilizationRecord;
 import net.reminitous.civilizationsmod.data.TerritorySavedData;

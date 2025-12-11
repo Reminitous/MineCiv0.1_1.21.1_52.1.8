@@ -1,9 +1,7 @@
 package net.reminitous.civilizationsmod.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class WarProposalPacket {
 
@@ -13,22 +11,19 @@ public class WarProposalPacket {
         this.warDetails = warDetails;
     }
 
-    // Encode data to bytes
     public static void encode(WarProposalPacket pkt, FriendlyByteBuf buf) {
         buf.writeUtf(pkt.warDetails);
     }
 
-    // Decode data from bytes
     public static WarProposalPacket decode(FriendlyByteBuf buf) {
         return new WarProposalPacket(buf.readUtf());
     }
 
-    // Handle the packet
-    public static void handle(WarProposalPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            // TODO: Add your server/client logic here
+    public static void handle(WarProposalPacket pkt, CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> {
+            // TODO: Handle war proposal
         });
-        ctx.get().setPacketHandled(true);
+        ctx.setPacketHandled(true);
     }
 
     public String getWarDetails() {

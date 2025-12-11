@@ -29,7 +29,7 @@ public class AnimalBreedGoal extends Goal {
     @Override
     public void tick() {
         BlockPos pos = shepherd.blockPosition();
-        List<Animal> animals = shepherd.level.getEntitiesOfClass(Animal.class,
+        List<Animal> animals = shepherd.level().getEntitiesOfClass(Animal.class,
                 TerritoryManager.getBoundingBoxForCivilization(CivilizationManager.getCivilization(shepherd)));
 
         for (Animal a : animals) {

@@ -28,9 +28,9 @@ public class CollectWoodGoal extends Goal {
     public void tick() {
         BlockPos pos = lumberjack.blockPosition();
 
-        if (lumberjack.level.getBlockState(pos).getBlock() == Blocks.OAK_LOG ||
-                lumberjack.level.getBlockState(pos).getBlock() == Blocks.BIRCH_LOG) {
-            lumberjack.level.destroyBlock(pos, true);
+        if (lumberjack.level().getBlockState(pos).getBlock() == Blocks.OAK_LOG ||
+                lumberjack.level().getBlockState(pos).getBlock() == Blocks.BIRCH_LOG) {
+            lumberjack.level().destroyBlock(pos, true);
             // Optionally deposit wood in civilization storage
         }
     }
