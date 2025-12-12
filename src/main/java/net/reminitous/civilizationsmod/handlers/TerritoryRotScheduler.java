@@ -16,11 +16,8 @@ import net.reminitous.civilizationsmod.data.TerritorySavedData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Runs periodically (~every 60s) to check for inactive civilizations
- * and remove them if they have been inactive for a week.
- */
-@Mod.EventBusSubscriber(modid = CivilizationsMod.MODID)
+
+/*@Mod.EventBusSubscriber(modid = CivilizationsMod.MODID)
 public class TerritoryRotScheduler {
 
     private static final long WEEK_MS = 7L * 24 * 60 * 60 * 1000; // 1 week in ms
@@ -67,3 +64,4 @@ public class TerritoryRotScheduler {
         }
     }
 }
+*/

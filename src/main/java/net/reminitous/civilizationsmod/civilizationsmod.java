@@ -104,7 +104,7 @@ public class CivilizationsMod {
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register event handlers
-        MinecraftForge.EVENT_BUS.register(new TerritoryEventHandler());
+        //MinecraftForge.EVENT_BUS.register(new TerritoryEventHandler());
         MinecraftForge.EVENT_BUS.register(new CivilizationServerEvents());
 
         LOGGER.debug("Registered Forge event listeners");

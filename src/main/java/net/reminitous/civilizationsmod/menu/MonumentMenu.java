@@ -14,7 +14,7 @@ import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.reminitous.civilizationsmod.registry.ModMenus;
 
-public class MonumentMenu extends AbstractContainerMenu {
+/*public class MonumentMenu extends AbstractContainerMenu {
 
     private final SimpleContainer inventory;
 
@@ -75,13 +75,14 @@ public class MonumentMenu extends AbstractContainerMenu {
 
         return stack;
     }
+}
 
-    /** Opens the GUI for a player */
+
     public static void openScreen(ServerPlayer player, SimpleContainer container, BlockPos pos) {
         NetworkHooks.openScreen(player, new MonumentMenuProvider(container, pos), pos);
     }
 
-    /** Inner class providing menu info */
+
     private static class MonumentMenuProvider implements net.minecraft.world.inventory.MenuProvider {
         private final SimpleContainer container;
         private final BlockPos pos;
@@ -102,9 +103,9 @@ public class MonumentMenu extends AbstractContainerMenu {
         }
     }
 
-    /** Factory for registering the menu with Forge */
+
     public static final IContainerFactory<MonumentMenu> FACTORY = (id, inv, buf) -> {
         SimpleContainer container = new SimpleContainer(9);
         return new MonumentMenu(id, inv, container);
     };
-}
+*/

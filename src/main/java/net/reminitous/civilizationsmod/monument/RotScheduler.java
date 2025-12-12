@@ -12,7 +12,7 @@ import net.reminitous.civilizationsmod.data.CivilizationRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RotScheduler {
+/*public class RotScheduler {
 
     private static final long WEEK_MS = 7L * 24 * 3600 * 1000L;
     private long accumulator = 0;
@@ -63,3 +63,4 @@ public class RotScheduler {
         }
     }
 }
+*/

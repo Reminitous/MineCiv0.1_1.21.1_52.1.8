@@ -21,10 +21,8 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Fully implements all civilization class enhancements.
- */
-@Mod.EventBusSubscriber
+
+/*@Mod.EventBusSubscriber
 public class CivilizationClassEnhancements {
 
     private static final Random random = new Random();
@@ -232,3 +230,4 @@ public class CivilizationClassEnhancements {
         }
     }
 }
+*/
